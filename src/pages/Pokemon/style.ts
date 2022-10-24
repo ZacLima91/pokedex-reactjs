@@ -18,7 +18,7 @@ export const PokemonDetails = styled.section`
     height: 100%;
   }
 
-  .title-container h1{
+  .title-container h1 {
     font-size: 3rem;
   }
 
@@ -86,5 +86,39 @@ export const PokemonDetails = styled.section`
     padding: 0.5rem;
     margin-left: 3rem;
     border-radius: 0.4rem;
+  }
+
+  .container-buttons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container-buttons button {
+    padding: 0.6rem;
+    width: 6rem;
+    margin: 1rem;
+    border-radius: 4px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .button-edit {
+    background-color: #f0da08;
+    border: #f0da08 solid 1px;
+    :hover {
+      background-color: #fff;
+      color: #f0da08;
+    }
+  }
+
+  .button-delete {
+    background-color: red;  
+    border: red solid 1px;
+    :hover {
+      background-color: #fff;
+      color: red;
+    }
   }
 `;

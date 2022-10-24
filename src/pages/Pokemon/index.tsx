@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { EditModalPokemon } from "../../components/modals/EditModalPokemon";
 import api from "../../services/api";
 import { Pokemon } from "../../utils/types/pokemon.type";
 import { PokemonDetails } from "./style";
@@ -16,6 +17,12 @@ export const GetByPokemon = () => {
   useEffect(() => {
     getPokemon();
   }, []);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClick: MouseEventHandler<HTMLSpanElement> = () => {
+    setOpen(!open);
+  };
 
   return (
     <PokemonDetails>
@@ -45,6 +52,21 @@ export const GetByPokemon = () => {
           </div>
         </div>
       </div>
+      <div className="container-buttons">
+        <button onClick={handleClick} className="button-edit">Editar</button>
+
+        <button className="button-delete">Deletar</button>
+      </div>
+      {open && (
+        <EditModalPokemon
+          handleClick={handleClick}
+          name={pokemon?.name}
+          description={pokemon?.description}
+          type={pokemon?.type}
+          height={pokemon?.height}
+          weight={pokemon?.weight}
+          imageURL={pokemon?.imageURL} id={pokemon?.id}        />
+      )}
     </PokemonDetails>
   );
 };
