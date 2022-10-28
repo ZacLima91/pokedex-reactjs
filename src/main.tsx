@@ -9,7 +9,7 @@ import { Footer } from "./components/Footer";
 import { CreatePokemon } from "./pages/CreatePokemon";
 import { GetByPokemon } from "./pages/Pokemon";
 import { Pokemon } from "./utils/types/pokemon.type";
-import api from "./services/api";
+import api from "./utils/api";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

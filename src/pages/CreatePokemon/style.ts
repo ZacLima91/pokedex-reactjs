@@ -23,6 +23,8 @@ export const ContainerCreateCard = styled.section`
   form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   input,
@@ -32,6 +34,7 @@ export const ContainerCreateCard = styled.section`
     border-radius: 5px;
     border: 1px solid #25201B;
     font-size: 1.2rem;
+    width: 98%;
   }
 
   button {
@@ -43,6 +46,7 @@ export const ContainerCreateCard = styled.section`
     font-size: 1.2rem;
     cursor: pointer;
     color: #fff;
+    width: 80%;
   }
 
   button:hover{

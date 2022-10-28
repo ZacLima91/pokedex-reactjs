@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const ContainerEditCard = styled.section`
   display: flex;
-  width: 56%;
+  width: 99%;
+  height: 93%;
   justify-content: center;
   align-items: center;
   margin: 2rem 0;
@@ -17,9 +18,9 @@ export const ContainerEditCard = styled.section`
 
   .container-header-edit{
     display: flex;
-    justify-content: space-between;
     width: 100%;
     align-items: center;
+    justify-content: center;
     margin-top: 1rem;
     h3 {
       margin-left:  1rem ;
@@ -28,9 +29,13 @@ export const ContainerEditCard = styled.section`
       font-size: 2rem;
     }
 
-    span{
-        margin-right: 1rem;
+    .icon-close{
+        font-size: 1.5rem;
         cursor: pointer;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+
     }
   }
 

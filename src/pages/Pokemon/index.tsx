@@ -1,27 +1,57 @@
 import { MouseEventHandler, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { EditModalPokemon } from "../../components/modals/EditModalPokemon";
-import api from "../../services/api";
+import api from "../../utils/api";
 import { Pokemon } from "../../utils/types/pokemon.type";
 import { PokemonDetails } from "./style";
+import swal from "sweetalert";
 
 export const GetByPokemon = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [pokemon, setPokemon] = useState<Pokemon>();
 
   const getPokemon = async () => {
-    const response = await api.get(`pokemons/${id}`);
-    setPokemon(response.data);
+    const response = await api.getOnePokemon(id);
+    setPokemon(response);
   };
 
   useEffect(() => {
     getPokemon();
   }, []);
 
-  const [open, setOpen] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
 
-  const handleClick: MouseEventHandler<HTMLSpanElement> = () => {
-    setOpen(!open);
+  const handleClickEdit: MouseEventHandler<HTMLSpanElement> = () => {
+    setOpenEditModal(!openEditModal);
+  };
+
+  const handleClickDelete: MouseEventHandler<HTMLSpanElement> = () => {
+    swal({
+      title: "Deletar Pokemon",
+      text: `Tem certeza que deseja apagar ${pokemon?.name}`,
+      icon: "warning",
+      dangerMode: true,
+      buttons: {
+        cancel: {
+          text: "Cancelar",
+          value: null,
+          visible: true,
+          closeModal: true,
+        },
+        confirm: {
+          text: "Confirmar",
+          value: true,
+          visible: true,
+          closeModal: true,
+        },
+      },
+    }).then(async (res) => {
+      if (res) {
+        res = await api.deletePokemon(id);
+        navigate("/");
+      }
+    });
   };
 
   return (
@@ -53,19 +83,25 @@ export const GetByPokemon = () => {
         </div>
       </div>
       <div className="container-buttons">
-        <button onClick={handleClick} className="button-edit">Editar</button>
+        <button onClick={handleClickEdit} className="button-edit">
+          Editar
+        </button>
 
-        <button className="button-delete">Deletar</button>
+        <button onClick={handleClickDelete} className="button-delete">
+          Deletar
+        </button>
       </div>
-      {open && (
+      {openEditModal && (
         <EditModalPokemon
-          handleClick={handleClick}
+          getPokemon={getPokemon}
+          handleClick={handleClickEdit}
           name={pokemon?.name}
           description={pokemon?.description}
           type={pokemon?.type}
           height={pokemon?.height}
           weight={pokemon?.weight}
-          imageURL={pokemon?.imageURL} id={pokemon?.id}        />
+          imageURL={pokemon?.imageURL}
+        />
       )}
     </PokemonDetails>
   );

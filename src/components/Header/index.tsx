@@ -2,11 +2,10 @@ import { HeaderComponent } from "./style";
 import Logo from "../../images/logo-pokedex.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../../services/api";
+import api from "../../utils/api";
 
 export function Header() {
   const [search, setSearch] = useState("");
-  const [pokemon, setPokemon] = useState([]);
 
   const navigate = useNavigate();
 
@@ -18,15 +17,6 @@ export function Header() {
     navigate(`/search?q=${search}`);
     setSearch("");
   };
-
-  useEffect(() => {
-    api
-      .get("/pokemons")
-      .then((response) => setPokemon(response.data))
-      .catch((err) => {
-        console.log("Erro ao buscar API, erro:", err);
-      });
-  }, []);
 
   return (
     <HeaderComponent>

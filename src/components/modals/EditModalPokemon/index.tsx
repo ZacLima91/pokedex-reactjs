@@ -1,12 +1,14 @@
-import { FormEvent, MouseEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../../../services/api";
-import { Pokemon } from "../../../utils/types/pokemon.type";
+import { FormEvent, MouseEventHandler, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import api from "../../../utils/api";
+import { PokemonUpdate } from "../../../utils/types/pokemon.type";
 import { ContainerEditCard } from "./style";
+import { IoMdCloseCircle } from "react-icons/io";
+import swal from "sweetalert";
 
 export function EditModalPokemon(props: {
-  id: any;
-  handleClick: MouseEventHandler<HTMLSpanElement>;
+  handleClick: MouseEventHandler<HTMLSpanElement> | any;
+  getPokemon: any;
   name: string | number | readonly string[] | undefined;
   description: string | readonly string[] | undefined;
   type: string | number | readonly string[] | undefined;
@@ -14,38 +16,35 @@ export function EditModalPokemon(props: {
   weight: string | number | readonly string[] | undefined;
   imageURL: string | number | readonly string[] | undefined;
 }) {
-  const navigate = useNavigate();
+  const { id } = useParams();
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const typePokemon = [];
-
-    typePokemon.push(e.currentTarget.typePokemon.value);
-    const height = parseFloat(e.currentTarget.heightPokemon.value);
-    const weight = parseFloat(e.currentTarget.weightPokemon.value);
-
-    const newPokemon: Pokemon = {
+    const newPokemon: PokemonUpdate = {
       name: e.currentTarget.namePokemon.value,
       description: e.currentTarget.descriptionPokemon.value,
-      type: typePokemon,
-      height: height,
-      weight: weight,
+      type: [e.currentTarget.typePokemon.value],
+      height: parseFloat(e.currentTarget.heightPokemon.value),
+      weight: parseFloat(e.currentTarget.weightPokemon.value),
       imageURL: e.currentTarget.imagePokemon.value,
     };
 
-    api.patch(`/pokemons/${props.id}`, newPokemon).catch((err) => {
-      console.log(err.response);
-    });
-
-    navigate('/');
+    if (id) {
+      const pokemonToUpdate = { ...newPokemon, id: id };
+      const pokemonResponse = await api.updatePokemon(pokemonToUpdate);
+      props.handleClick();
+    }
   }
 
+  useEffect(() => {
+    props.getPokemon();
+  });
   return (
     <ContainerEditCard>
       <div className="container-header-edit">
-        <h3>Criar Pokemon</h3>
-        <span onClick={props.handleClick}>X</span>
+        <h3>Editar Pokemon</h3>
+        <IoMdCloseCircle className="icon-close" onClick={props.handleClick} />
       </div>
       <form onSubmit={handleSubmit}>
         <input
@@ -53,6 +52,7 @@ export function EditModalPokemon(props: {
           type="text"
           name="namePokemon"
           placeholder="Nome do pokemon"
+          required
         />
         <textarea
           defaultValue={props.description}
@@ -60,12 +60,14 @@ export function EditModalPokemon(props: {
           cols={50}
           name="descriptionPokemon"
           placeholder="Descrição do pokemon"
+          required
         />
         <input
           defaultValue={props.type}
           type="text"
           name="typePokemon"
           placeholder="Tipo do pokemon"
+          required
         />
         <input
           defaultValue={props.height}
@@ -73,6 +75,7 @@ export function EditModalPokemon(props: {
           name="heightPokemon"
           step="0.1"
           placeholder="Altura do pokemon"
+          required
         />
         <input
           defaultValue={props.weight}
@@ -80,13 +83,15 @@ export function EditModalPokemon(props: {
           name="weightPokemon"
           step="0.1"
           placeholder="Peso do pokemon"
+          required
         />
         <input
           defaultValue={props.imageURL}
           name="imagePokemon"
           placeholder="Link da imagem do pokemon"
+          required
         />
-        <button type="submit">Criar</button>
+        <button type="submit">Atualizar</button>
       </form>
     </ContainerEditCard>
   );

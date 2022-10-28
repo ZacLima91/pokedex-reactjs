@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Card from "../../components/Card";
-import api from "../../services/api";
+import api from "../../utils/api";
 import { Pokemon } from "../../utils/types/pokemon.type";
 import { ContainerCards } from "./style";
 
@@ -10,10 +9,12 @@ export default function Home() {
 
   useEffect(() => {
     api
-      .get("/pokemons")
-      .then((response) => setPokemons(response.data))
-      .catch((err) => {
-        console.log("Erro ao buscar API, erro:", err);
+      .getPokemons()
+      .then((response) => {
+        setPokemons(response ?? []);
+      })
+      .catch((err: any) => {
+        console.log(err);
       });
   }, []);
 
@@ -21,16 +22,16 @@ export default function Home() {
     <ContainerCards>
       <div>
         {pokemons.map((pokemon: Pokemon) => (
-            <Card
-              key={pokemon.id}
-              id={pokemon.id}
-              name={pokemon.name}
-              description={pokemon.description}
-              type={pokemon.type}
-              height={pokemon.height}
-              weight={pokemon.weight}
-              imageURL={pokemon.imageURL}
-            />
+          <Card
+            key={pokemon.id}
+            id={pokemon.id}
+            name={pokemon.name}
+            description={pokemon.description}
+            type={pokemon.type}
+            height={pokemon.height}
+            weight={pokemon.weight}
+            imageURL={pokemon.imageURL}
+          />
         ))}
       </div>
     </ContainerCards>
