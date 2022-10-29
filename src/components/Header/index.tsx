@@ -1,7 +1,7 @@
 import { HeaderComponent } from "./style";
 import Logo from "../../images/logo-pokedex.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { CSSProperties, Dispatch, useEffect, useState } from "react";
 import { TiThMenu } from "react-icons/ti";
 import { IoMdCloseCircle } from "react-icons/io";
 
@@ -21,7 +21,9 @@ export function Header() {
   };
 
   const [open, setOpen] = useState(false);
-  const [visibility, setVisibility] = useState("");
+  const [visibility, setVisibility]  = useState<string>("");
+
+  
 
   const handleClose = () => {
     setOpen(!open);
