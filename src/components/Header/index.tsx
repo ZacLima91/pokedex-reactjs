@@ -2,7 +2,8 @@ import { HeaderComponent } from "./style";
 import Logo from "../../images/logo-pokedex.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../../utils/api";
+import { TiThMenu } from "react-icons/ti";
+import { IoMdCloseCircle } from "react-icons/io";
 
 export function Header() {
   const [search, setSearch] = useState("");
@@ -16,25 +17,55 @@ export function Header() {
 
     navigate(`/search?q=${search}`);
     setSearch("");
+    handleClose();
   };
 
+  const [open, setOpen] = useState(false);
+  const [visibility, setVisibility] = useState("");
+
+  const handleClose = () => {
+    setOpen(!open);
+  };
+
+  useEffect(() => {
+    if (open) {
+      setVisibility("hidden");
+    } else {
+      setVisibility("visible");
+    }
+  });
+
+
   return (
-    <HeaderComponent>
-      <Link to="/">
-        <img src={Logo} alt="Logo pokedex" />
-      </Link>
-      <ul>
-        <li><Link to="/">Inicio</Link></li>
-        <li><Link to="/create">Criar</Link></li>
-      </ul>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Busque um pokemon"
-          value={search}
+    <HeaderComponent visible={visibility}>
+      <div className="container-logo">
+        <Link onClick={handleClose} to="/">
+          <img src={Logo} alt="Logo pokedex" />
+        </Link>
+        <TiThMenu
+          className="hamburger"
+          onClick={handleClose}
         />
-      </form>
+      </div>
+      <div className="menu">
+        <ul>
+          <li>
+            <Link to="/" onClick={handleClose}>Inicio</Link>
+          </li>
+          <li>
+            <Link to="/create" onClick={handleClose}>Criar</Link>
+          </li>
+        </ul>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Busque um pokemon"
+            value={search}
+          />
+        </form>
+        <IoMdCloseCircle className="icon-close" onClick={handleClose} />
+      </div>
     </HeaderComponent>
   );
 }
