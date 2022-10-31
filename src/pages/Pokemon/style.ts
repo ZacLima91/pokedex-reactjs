@@ -114,11 +114,42 @@ export const PokemonDetails = styled.section`
   }
 
   .button-delete {
-    background-color: red;  
+    background-color: red;
     border: red solid 1px;
     :hover {
       background-color: #fff;
       color: red;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .container-details-pokemon {
+      display: flex;
+      flex-direction: column;
+      
+    }
+
+    .container-description,
+    .container-type,
+    .container-height,
+    .container-weight {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;  
+    }
+
+    .container-type span , .container-height span, .container-weight span{
+      margin: 0;
+    }
+
+    
+
+    .container-details-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
   }
 `;

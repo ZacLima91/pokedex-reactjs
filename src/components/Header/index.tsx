@@ -20,18 +20,18 @@ export function Header() {
     handleClose();
   };
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [visibility, setVisibility]  = useState<string>("");
 
   
 
   const handleClose = () => {
     setOpen(!open);
-  };
+  };  
 
   useEffect(() => {
     if (open) {
-      setVisibility("hidden");
+      setVisibility("hidden");  
     } else {
       setVisibility("visible");
     }
